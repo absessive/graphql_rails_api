@@ -13,13 +13,41 @@ const LINKS = gql`
   }
 `
 
+const NEW_LINKS = gql`
+  subscription {
+    newLink {
+      id
+      url
+      description
+    }
+  }
+`
+
 class Links extends Component {
+  _subscribeToNewLinks = subscribeToMore => {
+    subscribeToMore({
+      document: NEW_LINKS,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+
+        const newLink = subscriptionData.data.newLink
+
+        return Object.assign({}, prev, {
+          links: [newLink, ...prev.links],
+          __typename: prev.links.__typename
+        })
+      }
+    })
+  }
+
   render() {
     return (
       <Query query={LINKS}>
-      {({ loading, error, data }) => {
+      {({ loading, error, data, subscribeToMore }) => {
         if (loading) return <div>Loading...</div>
         if (error) return <div>Error</div>
+
+        this._subscribeToNewLinks(subscribeToMore)
 
         const linksToRender = data.links
 

@@ -1,3 +1,6 @@
+import ActionCable from 'actioncable'
+import { ActionCableLink } from 'graphql-ruby-client'
+import { ApolloLink } from 'apollo-link'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -12,8 +15,22 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:3002/graphql'
 })
 
+const cable = ActionCable.createConsumer('ws://localhost:3002/cable')
+
+const hasSubscriptionOperation = ({ query: { definitions } }) => {
+  return definitions.some(
+    ({ kind, operation }) => kind === 'OperationDefinition' && operation === 'subscription',
+  )
+}
+
+const link = ApolloLink.split(
+  hasSubscriptionOperation,
+  new ActionCableLink({cable}),
+  httpLink
+)
+
 const client = new ApolloClient({
-  link: httpLink,
+  link: link,
   cache: new InMemoryCache()
 })
 
