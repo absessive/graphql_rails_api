@@ -9,21 +9,31 @@ This is still a work in progress and only serves as a learning exercise. I will 
 1. Running local Redis instance. Mine is running on port 7504.
 
 ## Setup
-1. Install dependencies and set up DB
-`bundle install`
-`rails db:create`
-`rails db:migrate`
-2. Start Rails server. I am using port 3002.
-`rails s -p 3002`
-
 ### Backend
-TBD
-Rails app with a Sqlite DB.
-
+1. Install dependencies and set up DB
+```
+bundle install
+rails db:create
+rails db:migrate
+```
+2. Start Rails server. I am using port 3002.
+```
+rails s -p 3002
+```
 ### Frontend
-TBD
-React app using Apollo client
-
+1. cd into the client directory
+```
+cd graphql-react-client
+```
+2. Install dependencies
+```
+npm install
+```
+3. Start frontend app
+```
+npm start
+```
+This opens (or reloads) a browser tab to localhost:3001 (set in `package.json` scripts)
 ### GraphQL query tool
 I've used Altair.
 While setting up Altair, use the g
@@ -45,12 +55,13 @@ Fire up rails console, and create a new link.
 ```
 Link.create! url: 'http://www.reddit.com', description: 'Reddit'
 ```
+The UI and Altair (if listening to subscriptions) should both see the message for newly created Link.
 
 ## Notes
 ### Frontend
 1. Install the JS GraphQL client apollo
 `npm install apollo-boost react-apollo graphql --save`
-2. CORS protection (TBD). Since Altair is an external client, Rails rightly rejects traffic. For now I've added it to the ActionCable whitelist in `development.rb`
+2. CORS protection. Since Altair is an external client, Rails rightly rejects traffic. For now I've added it to the ActionCable whitelist in `development.rb`
 ```
 config.action_cable.allowed_request_origins = ['electron://altair']
 ```
