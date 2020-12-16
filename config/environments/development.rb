@@ -50,5 +50,5 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.action_cable.allowed_request_origins = ['electron://altair']
+  config.action_cable.allowed_request_origins = ['electron://altair', 'http://localhost:3001']
 end
