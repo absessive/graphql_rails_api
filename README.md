@@ -34,6 +34,12 @@ npm install
 npm start
 ```
 This opens (or reloads) a browser tab to localhost:3001 (set in `package.json` scripts)
+
+### Start application
+If you have the foreman gem installed (or do `gem install foreman`), start both the frontend and backend together using
+```
+foreman start
+```
 ### GraphQL query tool
 I've used Altair.
 While setting up Altair, use the g
